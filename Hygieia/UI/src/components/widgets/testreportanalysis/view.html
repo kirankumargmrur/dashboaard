@@ -1,0 +1,741 @@
+<div class="row ca-view">
+
+    <div >
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+                <li class="text-standard auth-modal-tab" ng-repeat="tab in TestReportWidget.minitabs" ng-click="TestReportWidget.miniToggleView($index)"
+                    ng-class="tab.name == TestReportWidget.miniWidgetView ? 'active' : ''" ng-show="(tab.name == 'Unit' && TestReportWidget.showUnitTab) || (tab.name == 'Regression' && TestReportWidget.showSanityTab) || (tab.name == 'Functional' && TestReportWidget.showFunctionalTab) || (tab.name == 'Sanity' && TestReportWidget.showIntegrationTab) || (tab.name == 'Summary')">
+                    <a class="textColor-Performance" data-toggle="tab" >{{tab.name}}</a>
+
+                </li>
+                </span>
+            </ul>
+        </div>
+        <!-- Summary tab modified -->
+        <div class="container-fluid" ng-if="TestReportWidget.miniWidgetView == 'Summary'">
+           <div class="row" >
+             <div class="col-lg-6">
+                 <div class="widget">
+                   <br>
+                   <!--div ng-repeat="test in TestReportWidget.sanityTests track by test.name">
+                   <div class="widget-heading"> Build : {{test.details.executionId}}
+                   </div>
+                   </div-->
+             <div class="widget-heading"> Test type &emsp; &emsp; &emsp; &emsp; Status
+             </div>
+               <div class="widget-body">
+                 <table class="table">
+                     <tr class="dash-row" ng-repeat="test in TestReportWidget.unitTests track by test.name"
+                         tabindex="0">
+                         <td class="ca-name"> <span class="text-standard-date ng-binding">UNIT (ID {{test.details.executionId}})</span></td>
+                         <td class="ca-value">
+                           <div class="animate-hide">
+			     <span dash-status="ok" class="ng-isolate-scope" ng-if="test.unitTestsDone"><span class="dash-status fa"><span class="dash-status-pass fa-check ng-scope" ></span></span></span>
+
+			     <span dash-status="alert" class="ng-isolate-scope" ng-if="!test.unitTestsDone"><span class="dash-status fa"><span class="dash-status-fail fa-check ng-scope"></span></span></span>
+                          </div>
+                        </td>
+                     </tr>
+                     <tr class="dash-row" ng-repeat="test in TestReportWidget.sanityTests track by test.name"
+                         tabindex="0">
+                         <td class="ca-name"><span class="text-standard-date ng-binding">REGRESSION (ID {{test.details.executionId}})</span></td>
+                         <td class="ca-value">
+                           <div class="animate-hide">
+			     <span dash-status="ok" class="ng-isolate-scope" ng-if="test.sanityTestsDone"><span class="dash-status fa"><span class="dash-status-pass fa-check ng-scope" ></span></span></span>
+			     <span dash-status="alert" class="ng-isolate-scope" ng-if="!test.sanityTestsDone"><span class="dash-status fa"><span class="dash-status-fail fa-check ng-scope"></span></span></span>
+
+                             <!--i class="fa fa-2x fa-check-circle text-success"
+                                 ng-if="test.sanityTestsDone"></i>
+                             <i class="fa fa-2x fa-times-circle text-danger"
+                                 ng-if="!test.sanityTestsDone"></i-->
+                          </div>
+                        </td>
+                     </tr>
+                     <tr class="dash-row" ng-repeat="test in TestReportWidget.functionalTests track by test.name"
+                         tabindex="0">
+                         <td class="ca-name"><span class="text-standard-date ng-binding">FUNCTIONAL (ID {{test.details.executionId}})</span></td>
+                         <td class="ca-value">
+                           <div class="animate-hide">
+			     <span dash-status="ok" class="ng-isolate-scope" ng-if="test.functionalTestsDone"><span class="dash-status fa"><span class="dash-status-pass fa-check ng-scope" ></span></span></span>
+			     <span dash-status="alert" class="ng-isolate-scope" ng-if="!test.functionalTestsDone"><span class="dash-status fa"><span class="dash-status-fail fa-check ng-scope"></span></span></span>
+                          </div>
+                        </td>
+                     </tr>
+                     <tr class="dash-row" ng-repeat="test in TestReportWidget.integrationTests track by test.name"
+                         tabindex="0">
+                         <td class="ca-name"><span class="text-standard-date ng-binding">SANITY (ID {{test.details.executionId}})</span></td>
+                         <td class="ca-value">
+                           <div class="animate-hide">
+          <span dash-status="ok" class="ng-isolate-scope" ng-if="test.integrationTestsDone"><span class="dash-status fa"><span class="dash-status-pass fa-check ng-scope" ></span></span></span>
+          <span dash-status="alert" class="ng-isolate-scope" ng-if="!test.integrationTestsDone"><span class="dash-status fa"><span class="dash-status-fail fa-check ng-scope"></span></span></span>
+                          </div>
+                        </td>
+                     </tr>
+                   </table>
+                   <!-- adding history Data here -->
+
+                   <br>
+                   <div >
+                   <div class="widget-heading"> LATEST TEST REPORTS
+                   </div>
+                   </div>
+                   <div style="width:450px">
+                     <div class="ct-wrapper clearfix"
+                          tabindex="0">
+
+                      <chartist class="ct-chart ct-golden-section" chartist-events = "chartistEvents" chartist-data="TestReportWidget.barData" chartist-chart-type="Bar" chartist-chart-options="TestReportWidget.barOptions" ></chartist>
+
+                   </div>
+
+                    <div>
+                          <ul class="legend">
+                                 <li ng-if="TestReportWidget.showSanityTab"><span class="unitTest"></span>Regression Test</li>
+                                 <li ng-if="TestReportWidget.showUnitTab"><span class="functionalTest" ></span>Unit Test</li>
+                                 <li ng-if="TestReportWidget.showFunctionalTab"><span class="sanityTest"></span>Functional Test</li>
+                                 <li ng-if="TestReportWidget.showIntegrationTab"><span class="integrationTest"></span>Sanity Test</li>
+                          </ul>
+                    </div>
+                 </div>
+                 <!-- adding labels here -->
+                   </div>
+                   <!-- end of history data -->
+               </div>
+               </div>
+            </div>
+        </div>
+
+
+
+        <!-- Unit tests Results tab modified -->
+        <div class="container-fluid" ng-if="TestReportWidget.miniWidgetView == 'Unit' && TestReportWidget.showUnitTab">
+           <div >
+                <div class="row" ng-repeat="test in TestReportWidget.unitTests track by test.name">
+                    <div class="col-lg-6">
+                        <div class="widget">
+                          <br>
+                          <div class="widget-heading">
+                             Build ID {{test.details.executionId}}
+                          </div>
+                          <!--div class="widget-heading">
+                              Test suites
+                          </div-->
+                            <!--div class="widget-body">
+                                <div class="widget ca-issues"-->
+                                    <div  class="dash-row clickable" ng-click="TestReportWidget.showDetail(test.details)">
+                                <span class="report-link pull-left">View All <i class="fa fa-arrow-right"
+                                                                                aria-hidden="true"></i></span>
+                                    </div>
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                    <!--div class="widget-body">
+
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestSuiteCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div-->
+
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                <!--/div>
+                            </div-->
+                        </div>
+
+                        <div class="widget average-build-duration">
+                            <!--Unit test section -->
+                            <div class="widget-body">
+                                <div class="widget ca-tests">
+                                  <div class="widget-heading">
+                                      Test cases
+                                  </div>
+                                    <div class="widget-body">
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestCaseCount}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Unit test section -->
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-6">
+                                <!--Version, Quality gate, Technical debt section -->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                      <br> <br>
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <!--div class="widget-heading">
+                                                    Testsuite Pass coverage
+                                                </div-->
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+							<!--
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.unitTestsuiteCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                                              <span fit-text>{{ test.testsuiteSuccessPercent }}<small
+                                                                      class="percent">
+                                                              </small></span>
+                                                            </div>
+							-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Version, Quality gate, Technical debt section -->
+                                <!--Code coverage section-->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <div class="widget-heading">
+                                                    Testcase Pass coverage
+                                                </div>
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.unitTestcaseCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                        <span fit-text>{{ test.testcaseSuccessPercent }}<small
+                                                class="percent">
+                                        </small></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Code coverage section-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sanity tests Results tab modified -->
+        <div class="container-fluid" ng-if="TestReportWidget.miniWidgetView == 'Regression' && TestReportWidget.showSanityTab">
+           <div >
+                <div class="row" ng-repeat="test in TestReportWidget.sanityTests track by test.name">
+	    <div class="col-lg-6">
+                        <div class="widget">
+                          <br>
+			<div class="widget-heading">
+				Build ID {{test.details.executionId}}
+			</div>
+                          <!--div class="widget-heading">
+                              Test suites
+                          </div-->
+                            <div class="widget-body">
+                                <div class="widget ca-issues">
+                                    <div  class="dash-row clickable" ng-click="TestReportWidget.showDetail(test.details)">
+                                <span class="report-link pull-left">View Detail <i class="fa fa-arrow-right"
+                                                                                aria-hidden="true"></i></span>
+                                    </div>
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                    <!--div class="widget-body">
+
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestSuiteCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div-->
+
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget average-build-duration">
+                            <!--Unit test section -->
+                            <div class="widget-body">
+                                <div class="widget ca-tests">
+                                  <div class="widget-heading">
+                                      Test cases
+                                  </div>
+                                    <div class="widget-body">
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestCaseCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Unit test section -->
+                        </div>
+
+                    </div>
+
+                          <br>
+                          <br>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-6">
+                                <!--Version, Quality gate, Technical debt section -->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                      <br> <br>
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <!--div class="widget-heading">
+                                                    Testsuite Pass coverage
+                                                </div-->
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+								<!--
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.sanityTestsuiteCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                                              <span fit-text>{{ test.testsuiteSuccessPercent }}<small
+                                                                      class="percent">
+                                                              </small></span>
+                                                            </div>
+								-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Version, Quality gate, Technical debt section -->
+                                <!--Code coverage section-->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <div class="widget-heading">
+                                                    Testcase Pass coverage
+                                                </div>
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.sanityTestcaseCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                        <span fit-text>{{ test.testcaseSuccessPercent }}<small
+                                                class="percent">
+                                        </small></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Code coverage section-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Functional tests Results tab modified -->
+        <div class="container-fluid" ng-if="TestReportWidget.miniWidgetView == 'Functional' && TestReportWidget.showFunctionalTab">
+           <div >
+                <div class="row" ng-repeat="test in TestReportWidget.functionalTests track by test.name">
+                    <div class="col-lg-6">
+                        <div class="widget">
+                          <br>
+                          <div class="widget-heading">
+                            Build ID {{test.details.executionId}}
+                          </div>
+                          <!--div class="widget-heading">
+                              Test suites
+                          </div-->
+                            <div class="widget-body">
+                                <div class="widget ca-issues">
+                                    <div  class="dash-row clickable" ng-click="TestReportWidget.showDetail(test.details)">
+                                <span class="report-link pull-left">View Detail <i class="fa fa-arrow-right"
+                                                                                aria-hidden="true"></i></span>
+                                    </div>
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                    <!--div class="widget-body">
+
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestSuiteCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestSuiteCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div-->
+
+                                    <!-- Blocker, Critical, Major Issues section -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget average-build-duration">
+                            <!--Unit test section -->
+                            <div class="widget-body">
+                                <div class="widget ca-tests">
+                                  <div class="widget-heading">
+                                      Test cases
+                                  </div>
+                                    <div class="widget-body">
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestCaseCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Unit test section -->
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-6">
+                                <!--Version, Quality gate, Technical debt section -->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                      <br> <br>
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <!--div class="widget-heading">
+                                                    Testsuite Pass coverage
+                                                </div-->
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+							<!--
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.functionalTestsuiteCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                                              <span fit-text>{{ test.testsuiteSuccessPercent }}<small
+                                                                      class="percent">
+                                                              </small></span>
+                                                            </div>
+								-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Version, Quality gate, Technical debt section -->
+
+                                <!--Code coverage section-->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <div class="widget-heading">
+                                                    Testcase Pass coverage
+                                                </div>
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.functionalTestcaseCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                        <span fit-text>{{ test.testcaseSuccessPercent }}<small
+                                                class="percent">
+                                        </small></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Code coverage section-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Integration tests Results tab modified -->
+        <div class="container-fluid" ng-if="TestReportWidget.miniWidgetView == 'Sanity' && TestReportWidget.showIntegrationTab">
+           <div >
+                <div class="row" ng-repeat="test in TestReportWidget.integrationTests track by test.name">
+                    <div class="col-lg-6">
+                        <div class="widget">
+                          <br>
+                          <div class="widget-heading">
+                            Build ID {{test.details.executionId}}
+                          </div>
+                          <!--div class="widget-heading">
+                              Test suites
+                          </div-->
+                            <div class="widget-body">
+                                <div class="widget ca-issues">
+                                    <div  class="dash-row clickable" ng-click="TestReportWidget.showDetail(test.details)">
+                                <span class="report-link pull-left">View Detail <i class="fa fa-arrow-right"
+                                                                                aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget average-build-duration">
+                            <!--integration test section -->
+                            <div class="widget-body">
+                                <div class="widget ca-tests">
+                                  <div class="widget-heading">
+                                      Test cases
+                                  </div>
+                                    <div class="widget-body">
+                                        <table class="table">
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Success</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.successTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Failures</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.failedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Skipped</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.skippedTestCaseCount}}</span></td>
+                                            </tr>
+                                            <tr class="dash-row"
+                                                tabindex="0">
+                                                <td class="ca-name"><span class="text-standard-date ng-binding">Total</span></td>
+                                                <td class="ca-value"><span class="text-standard-date ng-binding">{{test.totalTestCaseCount}}</span></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--integration test section -->
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-6">
+                                <!--Version, Quality gate, Technical debt section -->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                      <br> <br>
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <!--div class="widget-heading">
+                                                    Testsuite Pass coverage
+                                                </div-->
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Version, Quality gate, Technical debt section -->
+
+                                <!--Code coverage section-->
+                                <div class="col-lg-12 col-sm-6">
+                                    <div class="widget">
+                                        <div class="widget-body" fit-text=".build-summary-count > span" fit-text-max="40">
+                                            <div class="widget ca-coverage">
+                                                <div class="widget-heading">
+                                                    Testcase Pass coverage
+                                                </div>
+                                                <div class="widget-body">
+                                                    <div guage-container>
+                                                        <div class="ct-wrapper clearfix"
+                                                             tabindex="0">
+                                                            <chartist
+                                                                    class="ct-chart ct-square db-chart-primary ct-chart-{{ TestReportWidget.lineCoverage.status || 'Ok'}}"
+                                                                    chartist-data="TestReportWidget.integrationTestcaseCoverageData"
+                                                                    chartist-chart-options="TestReportWidget.pieOptions"
+                                                                    chartist-chart-type="Pie"></chartist>
+                                                            <div class="guage-number">
+                                        <span fit-text>{{ test.testcaseSuccessPercent }}<small
+                                                class="percent">
+                                        </small></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Code coverage section-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        </div>
+</div>

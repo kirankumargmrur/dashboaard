@@ -1,0 +1,71 @@
+<widget-modal widget-modal-title="Build Detailed View">
+    <div class="row">
+            <ul class="nav nav-tabs custom-tabs">
+                <li class="auth-modal-tab" ng-repeat="tab in ctrl.tabs" ng-click="ctrl.tabToggleView($index)"
+                    ng-class="tab.name == ctrl.tabView ? 'active' : ''">
+                    <a data-toggle="tab" >{{tab.name}}</a>
+                </li>
+            </ul>
+    
+            <div class="container-fluid" ng-if="ctrl.tabView == 'Jira Detalis'" style="background-color: rgba(255,255,255,.3);">
+                    <table class="table" style="margin-top: 10px;table-layout: fixed;">
+                            <tr>
+                                <th ng-repeat="(key, val) in ctrl.jira[0]" ng-click="ctrl.sortBy(key)">
+                                {{ key }}
+                                <span ng-if="ctrl.sortByColumn === key">{{ ctrl.sortByReverse ? '▲' : '▼' }}</span>
+                                </th>                                
+                            </tr>
+                            <tr ng-repeat="row in ctrl.jira | orderBy : ctrl.getSortColumn() : ctrl.sortByReverse" style="font-size: 85%;">
+                                <td ng-repeat="(key, val) in row" style="word-wrap: break-word;">
+                                    <a href="https://jira.forge.avaya.com/browse/{{val}}" target="_blank" ng-if="key == 'Id'" style="text-decoration:underline;">{{val}}</a>
+                                    <span ng-if="key == 'Description' || key == 'State'">{{val}}</span>
+                                    <a href="https://crucible.forge.avaya.com/cru/{{val}}" target="_blank" ng-if="key == 'Crucible Id'" style="text-decoration:underline;">{{val}}</a>
+                                </td>                           
+                            </tr>
+                        </table>
+            </div>
+    
+    
+    
+            <div class="container-fluid" ng-if="ctrl.tabView == 'Commit Details'" style="background-color: rgba(255,255,255,.3);">
+                    <table class="table" style="margin-top: 10px;table-layout: fixed;">
+                        <tr>
+                            <th ng-repeat="(key, val) in ctrl.commits[0]" ng-click="ctrl.sortBy(key)">
+                            {{ key }}
+                            <span ng-if="ctrl.sortByColumn === key">{{ ctrl.sortByReverse ? '▲' : '▼' }}</span>
+                            </th>                                
+                        </tr>
+                        <tr ng-repeat="row in ctrl.commits | orderBy : ctrl.getSortColumn() : ctrl.sortByReverse" style="font-size: 85%;">
+                                <!--td ng-repeat="column in row">
+                                    <a href="{{row.URL}}" target="_blank" ng-if="column == 'ID'" style="text-decoration:underline;">{{column}}</a>
+                                    <span ng-if="column != 'Id' && column != 'URL'">{{ column }}</span> 
+                                    
+                                </td -->  
+                            <td ng-repeat="(key, val) in row" style="word-wrap: break-word;">
+                                <a href="{{val}}" target="_blank" ng-if="key == 'Id' || key == 'URL'" style="text-decoration:underline;">{{val}}</a>
+                                <span ng-if="key != 'Id'  && key != 'URL'">{{val}}</span>                                        
+                            </td>                              
+                        </tr>
+                    </table>
+                
+            </div>
+
+            <div class="container-fluid" ng-if="ctrl.tabView == 'Artifacts'" style="background-color: rgba(255,255,255,.3);">
+                    <table class="table" style="margin-top: 10px;table-layout: fixed;">
+                            <tr>
+                                <th ng-repeat="(key, val) in ctrl.artifacts[0]" ng-click="ctrl.sortBy(key)">
+                                {{ key }}
+                                <span ng-if="ctrl.sortByColumn === key">{{ ctrl.sortByReverse ? '▲' : '▼' }}</span>
+                                </th>                                
+                            </tr>
+                            <tr ng-repeat="row in ctrl.artifacts | orderBy : ctrl.getSortColumn() : ctrl.sortByReverse" style="font-size: 85%;">
+                                <td ng-repeat="column in row" style="word-wrap: break-word;">
+                                {{ column }}
+                                </td>                                
+                            </tr>
+                        </table>
+                
+            </div>
+                                    
+    </div>
+</widget-modal >

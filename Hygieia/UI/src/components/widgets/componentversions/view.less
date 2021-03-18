@@ -1,0 +1,156 @@
+@import (reference) '../../../app/css/variables.less';
+@import (reference) '../../../app/css/mixins.less';
+@import (less)  '../../../../bower_components/angular-ui-select/dist/select.css';
+
+#dashboard .ca-view {
+    td {
+        padding: 0 .5rem 0 0;
+        border: none !important;
+        white-space: nowrap;
+
+        .text-lg;
+
+        &:first-of-type {
+            min-width: 3rem;
+        }
+    }
+
+    .percent {
+        font-size: 50%;
+        display: inline-block;
+        vertical-align: super;
+    }
+
+    .ca-status-Warning {
+        color: @dash-status-warn;
+    }
+    .ca-status-Alert {
+        color: @dash-status-fail;
+    }
+
+    .ca-coverage {
+        .panel-body {
+            padding-top: .5rem;
+        }
+        .ca-value {
+            .text-lg;
+            text-align: center;
+            margin-top: .5rem;
+        }
+
+        .ct-chart.ct-chart-Alert {
+            .ct-series-a {
+                .ct-donut {
+                    stroke: @dash-status-fail;
+                }
+            }
+        }
+
+        .ct-chart.ct-chart-Warning {
+            .ct-series-a {
+                .ct-donut {
+                    stroke: @dash-status-warn;
+                }
+            }
+        }
+
+        .ct-series-b {
+            .ct-donut {
+                stroke: @dash-widget-section-highlight;
+            }
+        }
+    }
+
+    .ca-version {
+        .ca-label {
+            .text-standard;
+            text-align: center;
+        }
+        .ca-value {
+            .text-lg;
+            text-align: center;
+            margin-top: .5rem;
+        }
+    }
+
+    .ca-issues, .ca-tests, .ca-security {
+        td:first-child {
+            width: 1rem;
+        }
+        .ca-name {
+            max-width: 8rem;
+            text-overflow: ellipsis;
+            overflow:hidden;
+        }
+        .ca-value {
+            text-align: right;
+        }
+    }
+
+    .report-link {
+    	cursor: pointer;
+    	color: @dash-dashboard-text;
+    	.transition(color .2s linear);
+
+    	&:hover {
+    		color: @white;
+    	}
+    }
+
+    .textColor-Performance{
+        color: @dash-widget-heading-text;
+    }
+    .custom-tabs>li.active>a, .custom-tabs>li.active>a:focus, .custom-tabs>li.active>a:hover {
+
+        color: #666;
+        background-color: transparent;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+    .legend { list-style: none;}
+      .legend li { float : left; margin-right: 10px;}
+      .legend span { border : 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+      .legend .unitTest { background-color: #D2691E;}
+      .legend .functionalTest { background-color: #800080;}
+      .legend .sanityTest { background-color: #ADD8E6;}
+      .legend .integrationTest {background-color: #fff;}
+
+            .ct-chart:not(.dash-chart-alt) .ct-series {
+          // chartist uses ct-series-colors for lines, but we
+          // want to further customize those colors
+          &.ct-series-a .ct-line {
+              stroke: #D2691E;
+          }
+
+          &.ct-series-b .ct-line {
+              stroke: #800080;
+          }
+          &.ct-series-c .ct-line {
+            stroke: #ADD8E6;
+          }
+          &.ct-series-d .ct-line {
+            stroke: #fff;
+          }
+
+          &.ct-series-a .ct-bar {
+              stroke: #D2691E;
+          }
+
+          &.ct-series-b .ct-bar {
+              stroke: #800080;
+          }
+          &.ct-series-c .ct-bar{
+            stroke: #ADD8E6;
+          }
+          &.ct-series-d .ct-line {
+            stroke: #fff;
+          }
+
+      }
+  .ct-axis-title {
+    .text-standard;
+     fill : #ffffff;
+  }
+
+}

@@ -1,0 +1,25 @@
+<div class="row ca-view">
+    <div class="container-fluid">
+        <div class="widget">
+            <div class="widget-heading ng-binding">
+                <span class="text-standard-date ng-binding">Build ID:
+                    <select id="buildId" ng-model="buildId" ng-change="ComponentVersionsWidget.getData(buildId)"
+                        ng-options="buildNumber for buildNumber in ComponentVersionsWidget.buildIds">
+                        <option value="">
+                            {{ComponentVersionsWidget.defaultBuildId}}</option>
+                    </select>
+                </span>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr class="dash-row clickable ng-scope" ng-repeat="component in ComponentVersionsWidget.components"
+                        ng-click="ComponentVersionsWidget.showComponents(component)">
+                        <td class="text-standard-date ng-binding">{{component.name }}</td>
+                        <td class="text-standard-date ng-binding">{{component.version }}</td>
+                        <td><span class="build-chevron pull-right fa fa-lg fa-angle-right"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

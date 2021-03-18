@@ -1,0 +1,33 @@
+<widget-modal widget-modal-close="true">
+    <div class="widget-detail test-detail">
+        <div class="row">
+            <span class="widget-heading">{{versionDetails.component}} Components</span>
+        </div>
+    </div>
+    <div class="widget-detail-body">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <div style="overflow-x:auto;">
+                        <table class="table table-striped" ng-repeat="component in versionDetails.componentDetails">
+                            <tbody class="ng-binding" ng-if="versionDetails.componentDetails.length != 0">
+                                <tr id="component.name" class="clickableRow">
+                                    <td class="widget-font-bold" style="width: 400px; padding-left: 100px;">
+                                        {{component.name }}</td>
+                                    <td class="widget-font-bold" style="width: 400px; padding-left: 100px;">
+                                        {{component.version }}</td>
+                                </tr>
+                            </tbody>
+                            <tbody class="ng-binding" ng-if="versionDetails.componentDetails.length == 0">
+                                <tr>
+                                    <td>Nothing to show</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</widget-modal>

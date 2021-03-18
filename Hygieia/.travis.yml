@@ -1,0 +1,53 @@
+language: java
+jdk:
+- oraclejdk8
+
+install: true
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/UI/node_modules
+
+before_install:
+# stop unused services and check memory
+ - "sudo service --status-all"
+ - "sudo free -m -t"
+ - "sudo /etc/init.d/mysql stop"
+ - "sudo /etc/init.d/postgresql stop"
+ - "#sudo /etc/init.d/couchdb stop"
+ - "sudo /etc/init.d/redis-server stop"
+ - "sudo free -m -t"
+
+script: mvn clean install -q
+
+notifications:
+  webhooks:
+    urls:
+      https://webhooks.gitter.im/e/48597b0f75dd571734bc
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: always   # options: [always|never|change] default: always
+  email:
+    recipients:
+      - tapabrata.pal@capitalone.com
+      - nireesh.thiruveedula@capitalone.com
+      - Stephen.Hughes@capitalone.com
+      - Prashant.Parekh@capitalone.com
+      - Matthew.Beasley@capitalone.com
+      - Subodh.Battina@capitalone.com
+      - Ragha.Vema@capitalone.com
+    on_success: always #[always|never|change] # default: change
+    on_failure: always # [always|never|change] # default: always
+
+after_failure:
+# check memory and show kernel messages
+ - "sudo free -m -t"
+ - "sudo dmesg"
+
+after_success:
+  - codecov
+branches:
+  only:
+  - master
+  - gerrit-integration

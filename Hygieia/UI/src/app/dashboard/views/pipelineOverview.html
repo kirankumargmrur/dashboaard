@@ -1,0 +1,68 @@
+<!--widget-modal widget-modal-title="PipeLine Overview">
+    <div class="container-fluid">
+        <table class="table table-striped">
+            <tr>
+                <th ng-repeat="(key, val) in ctrl.myArray[0]" ng-click="ctrl.sortBy(key)">
+                {{ key }}
+                <span ng-if="ctrl.sortByColumn === key">{{ ctrl.sortByReverse ? '▲' : '▼' }}</span>
+                </th>
+                <th>
+                    Details
+                </th>
+            </tr>
+            <tr ng-repeat="row in ctrl.myArray | orderBy : ctrl.getSortColumn() : ctrl.sortByReverse">
+                <td ng-repeat="column in row">
+                {{ column }}
+                </td>
+                <td>
+                    <button class="btn btn-primary pull-right" style="font-size:12px;padding:5px 10px;" >Details</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</widget-modal 
+background-color: rgba(255,255,255,.3); -->
+<!--div id="dashboard" class="main-content" -->
+<!--div id="pipeline" style="background-image: url(../assets/img/bg-forest.jpg);"-->
+    <div id="pipeline">
+        <div id="header">
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container-fluid">
+                    <a ng-href="#/" class="dashboard-logo"></a>
+                              
+                </div>
+            </nav>
+        </div> 
+               
+        <div style="padding-left: 15%;padding-top: 0.5%;padding-right: 5%;width: 85%!important;float: left">
+            <div style="border-bottom: 1px solid rgba(0,0,0,.35);color: #152131;font-size: 2.5rem;margin-bottom: 3rem;padding: 1rem;text-align: center;">
+            Build Overview
+            </div>
+                <table class="table table-bordered" style="color: #152131!important;">
+                    <tr>
+                        <th ng-repeat="(key, val) in ctrl.myArray[0]" ng-click="ctrl.sortBy(key)" style="min-width: 5%!important;">
+                        {{ key }}
+                        <span ng-if="ctrl.sortByColumn === key">{{ ctrl.sortByReverse ? '▲' : '▼' }}</span>
+                        </th>                       
+                    </tr>
+                </hr>
+                    
+                    <tr ng-repeat="row in ctrl.myArray | orderBy : ctrl.getSortColumn() : ctrl.sortByReverse" style="margin-top:10px;">
+                        <td ng-repeat="(key, val) in row">
+                            <a href="" target="_blank" ng-if="key == 'Id'" style="text-decoration:underline;color: #152131!important;" ng-click="ctrl.buildDashboardReport(val)">{{val}}</a>
+                            <span ng-if="key != 'Date' && key != 'Status' && key != 'Id'">{{ val }}</span>
+                            <span ng-if="key == 'Status' && val == 'Success'" style="padding: 6px;border-radius: 5px 5px 5px;border: 1px solid #32923C;color:#32923C;white-space: pre;"><span class="fa fa-sm fa-check-circle text-success" style="padding-right:5px;"></span>{{ val }}</span>
+                            <span ng-if="key == 'Status' && val == 'Failure'" style="padding: 6px;border-radius: 5px 5px 5px;border: 1px solid rgb(247, 6, 6);color: rgb(247, 6, 6);white-space: pre;"><span class="fa fa-sm fa-times-circle text-danger" style="padding-right:5px;"></span>{{ val }}</span>
+                            <span ng-if="key == 'Status' && val == 'Aborted'" style="padding: 6px;border-radius: 5px 5px 5px;border: 1px solid rgb(238, 100, 9);color: rgb(238, 100, 9);white-space: pre;"><span class="fa fa-sm fa-times-circle" style="padding-right:5px;"></span>{{ val }}</span>
+                            <span ng-if="key == 'Date'">{{ val | date:"EEE MMM dd yyyy HH:hh:ss 'GMT'Z '(India Standard Time)'"}} <span class="fa fa-lg fa-arrow-circle-right text-success " style="padding-left:5px;" ng-click="ctrl.buildDetails(row)"></span>
+                        
+                        </td>                         
+                    </tr>
+                </table>                                
+            </div>
+
+            <div style= "padding-top: 2%;">                    
+                <button type="submit" class="btn btn-primary btn-wide" ng-click="ctrl.proceedDashboardView()" >Proceed</button>
+            </div >
+            
+</div>

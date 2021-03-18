@@ -1,0 +1,55 @@
+<widget-modal widget-modal-title="Configure Component Versions Widget" class="ca-config">
+    <form name="configForm" role="form"
+          ng-submit="ComponentVersionsWidget.submit(ComponentVersionsWidget.testConfigs)"
+          novalidate="novalidate">
+
+        <form-group class="text-center">
+            <div class="text-center modal-label">Versions Details File Name</div>
+
+            <div class="form-group text-center" ng-repeat="configItem in ComponentVersionsWidget.testConfigs">
+                <div class="col-sm-3">
+                    <input
+                            type="text"
+                            name="testJobName"
+                            class="form-control-inline text-center"
+                            ng-model="configItem.testJobName"
+                            minlength="1"
+                            maxlength="8"
+                            required>
+                </div>
+                <div class="col-sm-8">
+
+                    <ui-select ng-model="configItem.testCollectorItem" theme="bootstrap"
+                               ng-disabled="ComponentVersionsWidget.testJobs.length === 0">
+                        <ui-select-match placeholder="{{ComponentVersionsWidget.testToolsDropdownPlaceholder}}">
+                            {{$select.selected.description}}
+                        </ui-select-match>
+                        <ui-select-choices allow-clear="true"
+                                           repeat="item in (configItem.testJob | orderBy:['collector.name','description'] | filter: $select.search ) track by item.id">
+                            <div ng-bind-html="(item.niceName + ' : ' + item.description) | highlight: $select.search"></div>
+                        </ui-select-choices>
+                        <ui-select-no-choice>
+                            No Jobs were found
+                        </ui-select-no-choice>
+                    </ui-select>
+
+
+                </div>
+                <dash-trash class="fa-lg" ng-click="ComponentVersionsWidget.deleteTestConfig(configItem)"></dash-trash>
+            </div>
+            <div class="form-group text-center"
+                 ng-show="ComponentVersionsWidget.testConfigs.length==0 || ComponentVersionsWidget.testConfigs[ComponentVersionsWidget.testConfigs.length-1].testCollectorItem != null">
+                <span class="fa fa-plus-circle fa-2x clickable" ng-click="ComponentVersionsWidget.addTestConfig()"></span>
+            </div>
+            <div class="form group text-center">
+                <label></label>
+                <button type="submit" class="btn btn-primary btn-wide">Save</button>
+            </div>
+        </form-group>
+    </form>
+</widget-modal>
+<script type="text/ng-template" id="sonarProjectUrlTemplate.html">
+	<a title={{match.model.options.instanceUrl}}>
+		<span ng-bind-html="match.label | uibTypeaheadHighlight:query"/>
+	</a>
+</script>
